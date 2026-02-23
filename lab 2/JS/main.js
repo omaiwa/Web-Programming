@@ -66,8 +66,27 @@ app.append(taskList);
 function renderTasks() {
     taskList.innerHTML = "";
 
-    tasks.forEach(task => {
+    let filtered = [...tasks];
+
+    filtered = filtered.filter(task =>
+        task.title.toLowerCase().includes(searchInput.value.toLowerCase())
+    );
+
+    if (filterSelect.value === "active") {
+        filtered = filtered.filter(t => !t.completed);
+    }
+    if (filterSelect.value === "completed") {
+        filtered = filtered.filter(t => t.completed);
+    }
+
+    filtered.forEach(task => {
         const li = document.createElement("li");
+        li.draggable = true;
+        li.dataset.id = task.id;
+
+        if (task.completed) {
+            li.classList.add("completed");
+        }
 
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
@@ -97,7 +116,7 @@ function renderTasks() {
     });
 }
 
-// add new task ---------------------------------
+// even ts ---------------------------------
 form.addEventListener("submit", e => {
     e.preventDefault();
 
@@ -112,6 +131,15 @@ form.addEventListener("submit", e => {
     saveTasks();
     renderTasks();
     form.reset();
+});
+
+searchInput.addEventListener("input", renderTasks);
+filterSelect.addEventListener("change", renderTasks);
+
+sortBtn.addEventListener("click", () => {
+    tasks.sort((a, b) => new Date(a.date) - new Date(b.date));
+    saveTasks();
+    renderTasks();
 });
 
 // init ---------------------------
