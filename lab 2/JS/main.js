@@ -19,7 +19,7 @@ document.body.append(app);
 const heading = document.createElement("h1");
 heading.textContent = "ToDo list";
 
-//add note
+//add note form -----------------------------
 const form = document.createElement("form");
 
 const inputTitle = document.createElement("input");
@@ -35,6 +35,27 @@ addBtn.textContent = "Добавить";
 
 form.append(inputTitle, inputDate, addBtn);
 app.append(heading, form);
+
+// search -----------------------------------
+const search = document.createElement("div");
+search.className = "search";
+
+const searchInput = document.createElement("input");
+searchInput.placeholder = "Search...";
+
+const filterSelect = document.createElement("select");
+filterSelect.innerHTML = `
+  <option value="all">Все</option>
+  <option value="active">В работе</option>
+  <option value="completed">Завершенные</option>
+`;
+
+const sortBtn = document.createElement("button");
+sortBtn.type = "button";
+sortBtn.textContent = "Сортировать по дедлайну";
+
+search.append(searchInput, filterSelect, sortBtn);
+app.append(search);
 
 // add task list
 const taskList = document.createElement("ul");

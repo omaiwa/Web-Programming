@@ -4,9 +4,9 @@
   padding: 20px;
 }
 
-form, .controls {
+form, .search {
   display: flex;
-  gap: 10px;
+  margin: 10px;
   flex-wrap: wrap;
 }
 
