@@ -111,6 +111,26 @@ function renderTasks() {
             renderTasks();
         });
 
+        li.addEventListener("dragstart", () => {
+            dragStartId = task.id;
+        });
+
+        li.addEventListener("dragover", e => {
+            e.preventDefault();
+        });
+
+        li.addEventListener("drop", () => {
+            const dragIndex = tasks.findIndex(t => t.id === dragStartId);
+            const dropIndex = tasks.findIndex(t => t.id === task.id);
+
+            const dragged = tasks.splice(dragIndex, 1)[0];
+            tasks.splice(dropIndex, 0, dragged);
+
+            saveTasks();
+            renderTasks();
+        });
+
+
         li.append(checkbox, span, deleteBtn);
         taskList.append(li);
     });
