@@ -26,7 +26,7 @@ const inputTitle = document.createElement("input");
 inputTitle.id = "text";
 inputTitle.type = "text";
 inputTitle.placeholder = "Название задачи";
-inputTitle.requred = true;
+inputTitle.required = true;
 
 const inputDate = document.createElement("input");
 inputDate.id = "date";
@@ -181,7 +181,13 @@ searchInput.addEventListener("input", renderTasks);
 filterSelect.addEventListener("change", renderTasks);
 
 sortBtn.addEventListener("click", () => {
-    tasks.sort((a, b) => new Date(a.date) - new Date(b.date));
+    tasks.sort((a, b) => {
+        if (!a.date && !b.date) return 0;
+        if (!a.date) return 1;
+        if (!b.date) return -1;
+
+        return new Date(a.date) - new Date(b.date);
+    });
     saveTasks();
     renderTasks();
 });
