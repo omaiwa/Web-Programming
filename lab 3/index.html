@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <title>2048</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="CSS/style.css">
+</head>
+
+<body>
+    <script src="JS/main.js"></script>
+    <div id="app">
+        <div class="flex">
+            <div class="header">
+                <h1 class="title">2048</h1>
+                <div class="score-box">
+                    <span>Score</span>
+                    <strong id="score">0</strong>
+                </div>
+                <div class="buttons">
+                    <button id="undoBtn">Undo</button>
+                    <button id="restartBtn">Restart</button>
+
+                </div>
+            </div>
+
+            <div id="controls" class="controls">
+                <button data-dir="up">↑</button>
+                <div>
+                    <button data-dir="left">←</button>
+                    <button data-dir="down">↓</button>
+                    <button data-dir="right">→</button>
+                </div>
+            </div>
+
+            <div class="grid">
+
+            </div>
+            <button id="leaderboardBtn">Leaderboard</button>
+        </div>
+    </div>
+</body>
+
+</html>
