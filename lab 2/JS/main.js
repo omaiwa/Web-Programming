@@ -23,11 +23,13 @@ heading.textContent = "ToDo list";
 const form = document.createElement("form");
 
 const inputTitle = document.createElement("input");
+inputTitle.id = "text";
 inputTitle.type = "text";
 inputTitle.placeholder = "Название задачи";
 inputTitle.requred = true;
 
 const inputDate = document.createElement("input");
+inputDate.id = "date";
 inputDate.type = "date";
 
 const addBtn = document.createElement("button");
@@ -41,9 +43,11 @@ const search = document.createElement("div");
 search.className = "search";
 
 const searchInput = document.createElement("input");
+searchInput.id = "searchBar";
 searchInput.placeholder = "Search...";
 
 const filterSelect = document.createElement("select");
+filterSelect.id = "filterByCompletion";
 filterSelect.innerHTML = `
   <option value="all">Все</option>
   <option value="active">В работе</option>
@@ -66,6 +70,7 @@ app.append(taskList);
 function renderTasks() {
     taskList.innerHTML = "";
 
+    //create filtered selection
     let filtered = [...tasks];
 
     filtered = filtered.filter(task =>
@@ -98,9 +103,27 @@ function renderTasks() {
             renderTasks();
         });
 
+        //show title and darte
         const span = document.createElement("span");
         span.textContent = `${task.title} (${task.date})`;
 
+        //edit note
+        const editBtn = document.createElement("button");
+        editBtn.textContent = "Edit";
+        editBtn.type = "button";
+
+        editBtn.addEventListener("click", () => {
+            const newTitle = prompt("Измениеть заголовок:", task.title);
+            const newDate = prompt("Изменить дату:", task.date);
+
+            if (newTitle) task.title = newTitle;
+            if (newDate) task.date = newDate;
+
+            saveTasks();
+            renderTasks();
+        });
+
+        //delete button
         const deleteBtn = document.createElement("button");
         deleteBtn.textContent = "Delete";
         deleteBtn.type = "button";
@@ -111,6 +134,7 @@ function renderTasks() {
             renderTasks();
         });
 
+        //drag and drop
         li.addEventListener("dragstart", () => {
             dragStartId = task.id;
         });
@@ -131,7 +155,7 @@ function renderTasks() {
         });
 
 
-        li.append(checkbox, span, deleteBtn);
+        li.append(checkbox, span, editBtn, deleteBtn);
         taskList.append(li);
     });
 }
