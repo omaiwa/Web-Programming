@@ -9,7 +9,6 @@
 </head>
 
 <body>
-    <script src="JS/main.js"></script>
     <div id="app">
         <div class="flex">
             <div class="header">
@@ -34,12 +33,39 @@
                 </div>
             </div>
 
-            <div class="grid">
+            <div id="grid" class="grid"></div>
 
-            </div>
             <button id="leaderboardBtn">Leaderboard</button>
         </div>
     </div>
+
+    <div id="gameOverModal" class="modal hidden">
+        <div class="modal-content">
+            <h2 id="gameOverText">Game Over</h2>
+            <input type="text" id="playerName" placeholder="Your name">
+            <button id="saveScoreBtn">Save Score</button>
+            <button id="newGameBtn">New Game</button>
+        </div>
+    </div>
+
+    <div id="leaderboardModal" class="modal hidden">
+        <div class="modal-content">
+            <h2>Top 10</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Score</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboardBody"></tbody>
+            </table>
+            <button id="closeLeaderboardBtn">Close</button>
+        </div>
+    </div>
+    <script src="JS/main.js"></script>
+
 </body>
 
 </html>
