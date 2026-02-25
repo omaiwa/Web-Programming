@@ -1,0 +1,149 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif, sans-serif;
+}
+
+body {
+    background: #c3d4db;
+    padding: 20px;
+}
+
+#app {
+    padding-left: 60px;
+    padding-right: 60px;
+}
+
+.container,
+.flex {
+    max-width: 600px;
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+}
+
+.weather-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.weather-entry {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+h1 {
+    color: #22263d;
+    padding: 10px;
+    font-size: 40px;
+}
+
+h2 {
+    color: #22263d;
+
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.buttons {
+    padding: 10px;
+}
+
+button {
+    padding: 8px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    background: #8f7a66;
+    color: white;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    width: 100%;
+    height: 100%;
+    margin-bottom: 15px;
+    gap: 10px;
+    background: #e7e2d8;
+    padding: 10px;
+    border-radius: 6px;
+    aspect-ratio: 1 / 1;
+}
+
+.city-card {
+    background: #8ebcd1;
+    width: 100%;
+    padding: 3%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 22px;
+    font-weight: bold;
+    border-radius: 5px;
+    aspect-ratio: 3 / 1;
+}
+
+.controls {
+    display: none;
+    margin-top: 15px;
+}
+
+.controls button {
+    padding: 10px;
+    margin: 5px;
+    font-size: 18px;
+}
+
+.modal {
+    position: fixed;
+    inset: 0;
+    background: #3d362b;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: #ddd6cb;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.hidden {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    #app {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
+    .tile {
+        font-size: 20px;
+    }
+
+    .grid {
+        width: 290;
+        height: 290;
+    }
+
+    .controls {
+        display: block;
+    }
+}
+
+@media (max-width: 480px) {
+    #app {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+}
