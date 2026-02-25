@@ -1,29 +1,21 @@
-const cityTitle = document.getElementById("city1");
-const weatherContainer = document.getElementById("weatherContainer1");
 const requestLocationModal = document.getElementById("requestLocationModal");
 const inputCityModal = document.getElementById("inputCityModal");
 const cityError = document.getElementById("cityError");
 const addCityButton = document.querySelector("#header button");
+const cityList = document.getElementById("cityList");
 
-// loading screen
-function showLoading() {
-    weatherContainer.textContent = "Загрузка погоды...";
-}
-
-// error
-function showError(message) {
-    weatherContainer.textContent = `Ошибка: ${message}`;
-}
+let cities = []
 
 // display forecast
-function renderWeather(cityName, dailyData) {
-    cityTitle.textContent = cityName;
-    weatherContainer.innerHTML = "";
+function renderWeather(city, dailyData) {
+    city.title.textContent = city.name;
+    city.weatherContainer.innerHTML = "";
+
     for (let i = 0; i < dailyData.time.length; i++) {
         const dayDiv = document.createElement("div");
         dayDiv.classList.add("weather-entry");
         dayDiv.textContent = `${dailyData.time[i]}: ${dailyData.temperature_2m_max[i]}°C / ${dailyData.temperature_2m_min[i]}°C, ${weatherCodeToText(dailyData.weathercode[i])}`;
-        weatherContainer.appendChild(dayDiv);
+        city.weatherContainer.appendChild(dayDiv)
     }
 }
 
@@ -62,18 +54,40 @@ function weatherCodeToText(code) {
     return mapping[code] || "Неизвестно";
 }
 
-// fetch weather by specified geo
-async function fetchWeather(lat, lon, cityName = "Текущее местоположение") {
-    showLoading();
-    try {
-        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=auto`;
-        const response = await fetch(url);
-        if (!response.ok) throw new Error("Не удалось получить данные");
-        const data = await response.json();
-        renderWeather(cityName, data.daily);
-    } catch (err) {
-        showError(err.message);
-    }
+// create city card
+function createCityCard(name) {
+    const card = document.createElement("div");
+    card.classList.add("city-card");
+
+    const title = document.createElement("h2");
+    title.textContent = name;
+
+    const weatherContainer = document.createElement("div");
+    weatherContainer.classList.add("weather-container");
+
+    card.appendChild(title);
+    card.appendChild(weatherContainer);
+    cityList.appendChild(card);
+
+    return { card, title, weatherContainer };
+}
+
+//store city data
+function saveCities() {
+    const stored = cities.map(c => ({
+        name: c.name,
+        lat: c.lat,
+        lon: c.lon
+    }));
+    localStorage.setItem("weatherCities", JSON.stringify(stored));
+}
+
+function loadCities() {
+    const stored = JSON.parse(localStorage.getItem("weatherCities")) || [];
+
+    stored.slice(0, 3).forEach(city => {
+        addCity(city, false);
+    });
 }
 
 // location perms
@@ -100,11 +114,13 @@ function requestLocation() {
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(
                 (pos) => {
-                    const { latitude, longitude } = pos.coords;
-                    fetchWeather(latitude, longitude);
-                },
-                () => {
-                    showInputCityModal();
+                    const city = { name: "Текущее местоположение", lat: pos.coords.latitude, lon: pos.coords.longitude };
+                    const card = createCityCard(city.name);
+                    city.card = card.card;
+                    city.title = card.title;
+                    city.weatherContainer = card.weatherContainer;
+                    cities.push(city);
+                    fetchWeather(city);
                 }
             );
         } else {
@@ -118,8 +134,21 @@ function requestLocation() {
     });
 }
 
+//добавть город
+function addCity(city) {
+    if (cities.length >= 3) return;
+    const cardObj = createCityCard(city.name);
+    city.card = cardObj.card;
+    city.title = cardObj.title;
+    city.weatherContainer = cardObj.weatherContainer;
+    cities.push(city);
+    fetchWeather(city);
+    saveCities();
+}
+
+// получитть произвоаольный город
 async function fetchManualCity() {
-    const cityInput = document.getElementById("playerName").value.trim();
+    const cityInput = document.getElementById("cityName").value.trim();
     if (!cityInput) return;
 
     try {
@@ -133,18 +162,38 @@ async function fetchManualCity() {
         }
 
         const { latitude, longitude, name } = geoData.results[0];
-        fetchWeather(latitude, longitude, name);
+        const city = {
+            name,
+            lat: latitude,
+            lon: longitude
+        };
+
+        addCity(city);
         closeModals();
     } catch (err) {
         cityError.classList.remove("hidden");
     }
 }
 
-//listeners
-document.querySelectorAll("#inputCityModal #shareWeather")[0]?.addEventListener("click", fetchManualCity);
-document.querySelectorAll("#inputCityModal #declineShareWeather")[0]?.addEventListener("click", closeModals);
+// fetch weather by specified geo
+async function fetchWeather(city) {
+    try {
+        city.weatherContainer.textContent = "Загрузка погоды...";
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${city.lat}&longitude=${city.lon}&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=auto`;
+        const response = await fetch(url);
+        if (!response.ok) throw new Error("Не удалось получить данные");
+        const data = await response.json();
+        renderWeather(city, data.daily);
+    } catch (err) {
+        city.weatherContainer.textContent = `Ошибка fetchWeather: ${err.message}`;
+    }
+}
 
+//listeners
+document.querySelectorAll("#inputCityModal #addCity")[0]?.addEventListener("click", fetchManualCity);
+document.querySelectorAll("#inputCityModal #declineShareWeather")[0]?.addEventListener("click", closeModals);
 addCityButton.addEventListener("click", showInputCityModal);
 
 //init
+loadCities();
 requestLocation();
