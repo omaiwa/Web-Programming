@@ -1,0 +1,44 @@
+<DOCTYPE html>
+    <html lang="ru">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Погодите</title>
+        <link rel="stylesheet" href="CSS/style.css">
+    </head>
+
+    <body>
+        <div id="app">
+            <div class="container">
+                <div id="header" class="header">
+                    <h1>
+                        Прогноз прогоды
+                    </h1>
+                    <button>
+                        Добавить город
+                    </button>
+                </div>
+                <div id="cityList" class="container"></div>
+            </div>
+        </div>
+        <div id="requestLocationModal" class="modal hidden">
+            <div class="modal-content">
+                <h2>Пожалуйста, поделитесь вашей геолокацией!</h2>
+                <button id="shareWeather">Поделиться</button>
+                <button id="declineShareWeather">Отклонить</button>
+            </div>
+        </div>
+        <div id="inputCityModal" class="modal hidden">
+            <div class="modal-content">
+                <h2>Введите название города:</h2>
+                <input type="text" id="cityName" placeholder="название города">
+                <button id="addCity">Подтвердить</button>
+                <button id="declineShareWeather">Отклонить</button>
+                <h2 id="cityError" class="hidden">Города не существует!</h2>
+            </div>
+        </div>
+        <script src="JS/main.js"></script>
+    </body>
+
+    </html>
+</DOCTYPE>
