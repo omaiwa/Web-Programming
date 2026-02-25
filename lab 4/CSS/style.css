@@ -42,25 +42,23 @@ h1 {
 
 h2 {
     color: #22263d;
-
+    margin-bottom: 10px;
 }
 
 .header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin-bottom: 15px;
 }
 
-.buttons {
-    padding: 10px;
-}
-
 button {
-    padding: 8px;
+    font-size: 16px;
+    padding: 10px;
     border: none;
     cursor: pointer;
     border-radius: 4px;
-    background: #8f7a66;
+    background: #486caf;
     color: white;
 }
 
@@ -104,14 +102,14 @@ button {
 .modal {
     position: fixed;
     inset: 0;
-    background: #3d362b;
+    background: #395869;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .modal-content {
-    background: #ddd6cb;
+    background: #bed2e0;
     padding: 20px;
     border-radius: 8px;
     text-align: center;
